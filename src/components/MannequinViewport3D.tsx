@@ -10,7 +10,7 @@ import {
   getFabricTexture,
   getTurntablePlinthTexture,
 } from '../utils/proceduralTextures';
-import { loadRealisticMannequin, RealisticMannequin } from '../three/RealisticMannequin';
+import { BodyType, loadRealisticMannequin, RealisticMannequin } from '../three/RealisticMannequin';
 
 interface MannequinViewport3DProps {
   jacket: GarmentItem | null;
@@ -694,6 +694,15 @@ export const MannequinViewport3D: React.FC<MannequinViewport3DProps> = ({
   const [azimuthDeg, setAzimuthDeg] = useState(8);
   const [webglFallback, setWebglFallback] = useState(false);
   const [projectedTags, setProjectedTags] = useState<ProjectedTag[]>([]);
+  const [bodyType, setBodyType] = useState<BodyType>(() => {
+    try {
+      return localStorage.getItem('dripcheck.bodyType') === 'female' ? 'female' : 'male';
+    } catch {
+      return 'male';
+    }
+  });
+  const bodyTypeRef = useRef(bodyType);
+  bodyTypeRef.current = bodyType;
 
   const sceneRefs = useRef<{
     renderer?: THREE.WebGLRenderer;
@@ -930,7 +939,7 @@ export const MannequinViewport3D: React.FC<MannequinViewport3DProps> = ({
 
     // Swap the procedural figure for the realistic mannequin once its model loads.
     // If loading fails, the procedural figure simply stays.
-    loadRealisticMannequin()
+    loadRealisticMannequin(bodyTypeRef.current)
       .then((real) => {
         if (disposed) {
           real.dispose();
@@ -941,6 +950,7 @@ export const MannequinViewport3D: React.FC<MannequinViewport3DProps> = ({
         mannequinRoot.add(real.root);
         const p = latestPropsRef.current;
         real.setOutfit({ jacket: p.jacket, top: p.top, bottom: p.bottom, shoes: p.shoes }, maxAnisotropy);
+        real.setBodyType(bodyTypeRef.current);
         sceneRefs.current.realistic = real;
         requestRender();
       })
@@ -1226,6 +1236,19 @@ export const MannequinViewport3D: React.FC<MannequinViewport3DProps> = ({
     requestRender();
   }, [jacket, top, bottom, shoes]);
 
+  // Male / female body proportions
+  useEffect(() => {
+    try {
+      localStorage.setItem('dripcheck.bodyType', bodyType);
+    } catch {
+      /* storage unavailable: choice lasts for this visit */
+    }
+    const { realistic, requestRender } = sceneRefs.current;
+    if (!realistic) return;
+    realistic.setBodyType(bodyType);
+    requestRender();
+  }, [bodyType]);
+
   // Re-project pins when toggled
   useEffect(() => {
     sceneRefs.current.requestRender();
@@ -1315,6 +1338,17 @@ export const MannequinViewport3D: React.FC<MannequinViewport3DProps> = ({
             {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
           </button>
         )}
+
+        <button
+          type="button"
+          onClick={() => setBodyType((prev) => (prev === 'male' ? 'female' : 'male'))}
+          title={bodyType === 'male' ? 'Body: Male (switch to Female)' : 'Body: Female (switch to Male)'}
+          aria-label={bodyType === 'male' ? 'Switch to female body' : 'Switch to male body'}
+          className="w-11 h-11 rounded-full bg-[#343538]/90 text-[#e3e2e6] hover:bg-[#38393c] flex flex-col items-center justify-center transition-transform active:scale-90 shadow-lg leading-none"
+        >
+          <span className="text-[13px] font-semibold">{bodyType === 'male' ? 'M' : 'F'}</span>
+          <span className="text-[8px] text-[#c9c6c0] mt-0.5">BODY</span>
+        </button>
 
         <button
           type="button"
