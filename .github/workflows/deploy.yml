@@ -38,5 +38,11 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # Switch Pages from "Deploy from a branch" to "GitHub Actions" if needed.
+      - name: Use GitHub Actions as the Pages source
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT repos/${{ github.repository }}/pages -f build_type=workflow
       - id: deployment
         uses: actions/deploy-pages@v4
