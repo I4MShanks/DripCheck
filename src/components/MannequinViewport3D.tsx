@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { Eye, EyeOff, Maximize2, Minimize2, RotateCw } from 'lucide-react';
 import { GarmentItem, GarmentCategory } from '../types/wardrobe';
 import {
@@ -55,6 +56,55 @@ function detectSoftwareWebGL(): boolean {
   }
 }
 
+/* ---------- Smooth geometry + fabric helpers ---------- */
+
+// Box with softly rounded edges (radius is clamped to fit the box).
+function rbox(w: number, h: number, d: number, r = 0.008) {
+  const rr = Math.max(0.0005, Math.min(r, w / 2 - 1e-4, h / 2 - 1e-4, d / 2 - 1e-4));
+  return new RoundedBoxGeometry(w, h, d, 4, rr);
+}
+
+// Tapered capsule centred on the origin along Y (drop-in for CylinderGeometry):
+// round ends hide the joints between limb segments.
+function limb(rTop: number, rBottom: number, length: number, radial = 48) {
+  const pts: THREE.Vector2[] = [];
+  const half = length / 2;
+  const capSteps = 10;
+  const capH = 0.6;
+  for (let i = 0; i <= capSteps; i++) {
+    const a = -Math.PI / 2 + (i / capSteps) * (Math.PI / 2);
+    pts.push(new THREE.Vector2(Math.cos(a) * rBottom + 1e-5, -half + Math.sin(a) * rBottom * capH));
+  }
+  for (let i = 1; i < 16; i++) {
+    const t = i / 16;
+    pts.push(new THREE.Vector2(rBottom + (rTop - rBottom) * t, -half + length * t));
+  }
+  for (let i = 0; i <= capSteps; i++) {
+    const a = (i / capSteps) * (Math.PI / 2);
+    pts.push(new THREE.Vector2(Math.cos(a) * rTop + 1e-5, half + Math.sin(a) * rTop * capH));
+  }
+  return new THREE.LatheGeometry(pts, radial);
+}
+
+// Turns a coarse lathe profile into a smooth curve.
+function smooth(points: THREE.Vector2[], samples = 64) {
+  return new THREE.SplineCurve(points).getPoints(samples);
+}
+
+// Cloth-like material: woven bump from the fabric texture plus soft sheen at grazing angles.
+function fabricMaterial(tex: THREE.Texture, roughness: number, metalness = 0.02, sheen = 0.7) {
+  return new THREE.MeshPhysicalMaterial({
+    map: tex,
+    bumpMap: tex,
+    bumpScale: 1.4,
+    roughness,
+    metalness,
+    sheen,
+    sheenRoughness: 0.72,
+    sheenColor: new THREE.Color(0.32, 0.32, 0.32),
+  });
+}
+
 function disposeGroupContents(group: THREE.Group) {
   const geometries = new Set<THREE.BufferGeometry>();
   const materials = new Set<THREE.Material>();
@@ -77,10 +127,13 @@ function disposeGroupContents(group: THREE.Group) {
 }
 
 function buildMannequinBody(mannequinGroup: THREE.Group) {
-  const bodyMat = new THREE.MeshStandardMaterial({
-    color: 0x26282e,
-    roughness: 0.68,
-    metalness: 0.14,
+  // Satin-lacquered display mannequin finish
+  const bodyMat = new THREE.MeshPhysicalMaterial({
+    color: 0x2a2c33,
+    roughness: 0.42,
+    metalness: 0.06,
+    clearcoat: 0.55,
+    clearcoatRoughness: 0.28,
   });
 
   const jointMat = new THREE.MeshStandardMaterial({
@@ -90,7 +143,7 @@ function buildMannequinBody(mannequinGroup: THREE.Group) {
   });
 
   // Sculpted featureless head
-  const headGeo = new THREE.SphereGeometry(0.105, 28, 24);
+  const headGeo = new THREE.SphereGeometry(0.105, 64, 48);
   headGeo.scale(0.86, 1.18, 0.96);
   const head = new THREE.Mesh(headGeo, bodyMat);
   head.position.set(0, 1.69, 0.01);
@@ -98,12 +151,12 @@ function buildMannequinBody(mannequinGroup: THREE.Group) {
   mannequinGroup.add(head);
 
   // Neck column + collar seam ring
-  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.052, 0.06, 0.14, 24), bodyMat);
+  const neck = new THREE.Mesh(limb(0.052, 0.06, 0.14), bodyMat);
   neck.position.set(0, 1.52, 0);
   neck.castShadow = true;
   mannequinGroup.add(neck);
 
-  const neckRing = new THREE.Mesh(new THREE.TorusGeometry(0.059, 0.007, 10, 28), jointMat);
+  const neckRing = new THREE.Mesh(new THREE.TorusGeometry(0.059, 0.007, 16, 64), jointMat);
   neckRing.rotation.x = Math.PI / 2;
   neckRing.position.set(0, 1.465, 0);
   mannequinGroup.add(neckRing);
@@ -118,7 +171,7 @@ function buildMannequinBody(mannequinGroup: THREE.Group) {
     new THREE.Vector2(0.135, 1.44),
     new THREE.Vector2(0.062, 1.47),
   ];
-  const torsoGeo = new THREE.LatheGeometry(torsoProfile, 28);
+  const torsoGeo = new THREE.LatheGeometry(smooth(torsoProfile), 64);
   torsoGeo.scale(1.12, 1, 0.72);
   const torso = new THREE.Mesh(torsoGeo, bodyMat);
   torso.castShadow = true;
@@ -126,7 +179,7 @@ function buildMannequinBody(mannequinGroup: THREE.Group) {
   mannequinGroup.add(torso);
 
   // Pelvis base block
-  const pelvisGeo = new THREE.SphereGeometry(0.142, 24, 18);
+  const pelvisGeo = new THREE.SphereGeometry(0.142, 48, 32);
   pelvisGeo.scale(1.12, 0.72, 0.74);
   const pelvis = new THREE.Mesh(pelvisGeo, bodyMat);
   pelvis.position.set(0, 0.87, 0);
@@ -139,10 +192,10 @@ function buildMannequinBody(mannequinGroup: THREE.Group) {
     armPivot.rotation.z = side * 0.13;
     armPivot.rotation.x = 0.05;
 
-    const shoulderBall = new THREE.Mesh(new THREE.SphereGeometry(0.056, 18, 16), bodyMat);
+    const shoulderBall = new THREE.Mesh(new THREE.SphereGeometry(0.056, 40, 28), bodyMat);
     armPivot.add(shoulderBall);
 
-    const upperArm = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.043, 0.28, 18), bodyMat);
+    const upperArm = new THREE.Mesh(limb(0.05, 0.043, 0.28), bodyMat);
     upperArm.position.set(0, -0.14, 0);
     upperArm.castShadow = true;
     armPivot.add(upperArm);
@@ -152,17 +205,18 @@ function buildMannequinBody(mannequinGroup: THREE.Group) {
     forearmPivot.rotation.x = -0.14;
     forearmPivot.rotation.z = -side * 0.04;
 
-    const forearm = new THREE.Mesh(new THREE.CylinderGeometry(0.041, 0.031, 0.25, 18), bodyMat);
+    const forearm = new THREE.Mesh(limb(0.041, 0.031, 0.25), bodyMat);
     forearm.position.set(0, -0.125, 0);
     forearm.castShadow = true;
     forearmPivot.add(forearm);
 
-    const wristRing = new THREE.Mesh(new THREE.TorusGeometry(0.031, 0.0045, 8, 20), jointMat);
+    const wristRing = new THREE.Mesh(new THREE.TorusGeometry(0.031, 0.0045, 12, 48), jointMat);
     wristRing.rotation.x = Math.PI / 2;
     wristRing.position.set(0, -0.245, 0);
     forearmPivot.add(wristRing);
 
-    const handGeo = new THREE.BoxGeometry(0.036, 0.105, 0.058);
+    const handGeo = new THREE.SphereGeometry(0.05, 32, 24);
+    handGeo.scale(0.4, 1.08, 0.62);
     const hand = new THREE.Mesh(handGeo, bodyMat);
     hand.position.set(0, -0.305, 0.01);
     hand.castShadow = true;
@@ -178,11 +232,11 @@ function buildMannequinBody(mannequinGroup: THREE.Group) {
     legGroup.position.set(side * 0.095, 0.84, 0);
     legGroup.rotation.z = side * 0.018;
 
-    const thigh = new THREE.Mesh(new THREE.CylinderGeometry(0.072, 0.056, 0.42, 18), bodyMat);
+    const thigh = new THREE.Mesh(limb(0.072, 0.056, 0.42), bodyMat);
     thigh.position.set(0, -0.21, 0);
     legGroup.add(thigh);
 
-    const calf = new THREE.Mesh(new THREE.CylinderGeometry(0.054, 0.038, 0.36, 18), bodyMat);
+    const calf = new THREE.Mesh(limb(0.054, 0.038, 0.36), bodyMat);
     calf.position.set(0, -0.59, 0);
     legGroup.add(calf);
 
@@ -202,11 +256,7 @@ function buildGarmentLayers(
 
   // 1. BASE LAYER (TOP)
   const topTex = getFabricTexture(top.fabric, top.colorHex, maxAnisotropy);
-  const topMat = new THREE.MeshStandardMaterial({
-    map: topTex,
-    roughness: top.fabric === 'cotton' ? 0.88 : 0.78,
-    metalness: 0.02,
-  });
+  const topMat = fabricMaterial(topTex, top.fabric === 'cotton' ? 0.88 : 0.78);
 
   const teeProfile = [
     new THREE.Vector2(0.146, 0.87),
@@ -217,7 +267,7 @@ function buildGarmentLayers(
     new THREE.Vector2(0.148, 1.445),
     new THREE.Vector2(0.078, 1.468),
   ];
-  const teeGeo = new THREE.LatheGeometry(teeProfile, 30);
+  const teeGeo = new THREE.LatheGeometry(smooth(teeProfile), 64);
   teeGeo.scale(1.13, 1, 0.74);
   const teeBody = new THREE.Mesh(teeGeo, topMat);
   teeBody.castShadow = true;
@@ -227,14 +277,14 @@ function buildGarmentLayers(
   // Ribbed crew collar
   const collarMat = topMat.clone();
   collarMat.roughness = 0.92;
-  const crewCollar = new THREE.Mesh(new THREE.TorusGeometry(0.078, 0.014, 12, 28), collarMat);
+  const crewCollar = new THREE.Mesh(new THREE.TorusGeometry(0.078, 0.014, 20, 64), collarMat);
   crewCollar.rotation.x = Math.PI / 2 + 0.08;
   crewCollar.position.set(0, 1.462, 0.01);
   garmentGroup.add(crewCollar);
 
   // Oxford shirt details if sky-oxford
   if (top.id === 'sky-oxford') {
-    const placket = new THREE.Mesh(new THREE.BoxGeometry(0.032, 0.45, 0.02), collarMat);
+    const placket = new THREE.Mesh(rbox(0.032, 0.45, 0.02), collarMat);
     placket.position.set(0, 1.19, 0.136);
     garmentGroup.add(placket);
 
@@ -247,7 +297,7 @@ function buildGarmentLayers(
     }
 
     [-1, 1].forEach((side) => {
-      const collarLeaf = new THREE.Mesh(new THREE.BoxGeometry(0.065, 0.048, 0.014), collarMat);
+      const collarLeaf = new THREE.Mesh(rbox(0.065, 0.048, 0.014), collarMat);
       collarLeaf.position.set(side * 0.056, 1.448, 0.072);
       collarLeaf.rotation.y = side * -0.45;
       collarLeaf.rotation.z = side * -0.25;
@@ -257,7 +307,7 @@ function buildGarmentLayers(
 
   // Hoodie structure if black-hoodie
   if (top.id === 'black-hoodie') {
-    const hoodGeo = new THREE.TorusGeometry(0.115, 0.045, 14, 24, Math.PI * 1.35);
+    const hoodGeo = new THREE.TorusGeometry(0.115, 0.045, 28, 64, Math.PI * 1.35);
     const hood = new THREE.Mesh(hoodGeo, topMat);
     hood.position.set(0, 1.45, -0.045);
     hood.rotation.x = 0.55;
@@ -265,7 +315,7 @@ function buildGarmentLayers(
     hood.castShadow = true;
     garmentGroup.add(hood);
 
-    const pocket = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.14, 0.03), topMat);
+    const pocket = new THREE.Mesh(rbox(0.22, 0.14, 0.03), topMat);
     pocket.position.set(0, 0.99, 0.115);
     garmentGroup.add(pocket);
   }
@@ -280,7 +330,7 @@ function buildGarmentLayers(
       sleevePivot.rotation.x = 0.05;
 
       const upperSleeve = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.068, isLong ? 0.058 : 0.064, isLong ? 0.29 : 0.21, 20),
+        limb(0.068, isLong ? 0.058 : 0.064, isLong ? 0.29 : 0.21),
         topMat
       );
       upperSleeve.position.set(0, isLong ? -0.14 : -0.1, 0);
@@ -292,7 +342,7 @@ function buildGarmentLayers(
         lowerPivot.position.set(0, -0.28, 0);
         lowerPivot.rotation.x = -0.14;
         lowerPivot.rotation.z = -side * 0.04;
-        const lowerSleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.056, 0.044, 0.23, 20), topMat);
+        const lowerSleeve = new THREE.Mesh(limb(0.056, 0.044, 0.23), topMat);
         lowerSleeve.position.set(0, -0.115, 0);
         lowerSleeve.castShadow = true;
         lowerPivot.add(lowerSleeve);
@@ -313,11 +363,12 @@ function buildGarmentLayers(
         : jacket.fabric === 'knit'
         ? 0.92
         : 0.82;
-    const jMat = new THREE.MeshStandardMaterial({
-      map: jTex,
-      roughness: jRoughness,
-      metalness: jacket.fabric === 'ripstop' ? 0.08 : 0.02,
-    });
+    const jMat = fabricMaterial(
+      jTex,
+      jRoughness,
+      jacket.fabric === 'ripstop' ? 0.08 : 0.02,
+      jacket.fabric === 'ripstop' ? 0.3 : jacket.fabric === 'corduroy' ? 0.95 : 0.7
+    );
 
     const isOpenFront = jacket.fabric === 'corduroy';
 
@@ -334,8 +385,8 @@ function buildGarmentLayers(
       ];
       // Lathe covering -25 deg to +205 deg (around back and sides)
       const backWrapGeo = new THREE.LatheGeometry(
-        jacketBackProfile,
-        30,
+        smooth(jacketBackProfile),
+        64,
         Math.PI * 0.14,
         Math.PI * 1.72
       );
@@ -354,7 +405,7 @@ function buildGarmentLayers(
       });
 
       [-1, 1].forEach((side) => {
-        const panel = new THREE.Mesh(new THREE.BoxGeometry(0.135, 0.57, 0.036), jMat);
+        const panel = new THREE.Mesh(rbox(0.135, 0.57, 0.036), jMat);
         panel.position.set(side * 0.105, 1.125, 0.13);
         panel.rotation.y = side * 0.22;
         panel.rotation.x = -0.03;
@@ -362,12 +413,12 @@ function buildGarmentLayers(
         garmentGroup.add(panel);
 
         // Chest utility pocket + flap + button
-        const pocket = new THREE.Mesh(new THREE.BoxGeometry(0.088, 0.105, 0.022), jMat);
+        const pocket = new THREE.Mesh(rbox(0.088, 0.105, 0.022), jMat);
         pocket.position.set(side * 0.112, 1.22, 0.146);
         pocket.rotation.y = side * 0.24;
         garmentGroup.add(pocket);
 
-        const flap = new THREE.Mesh(new THREE.BoxGeometry(0.092, 0.032, 0.026), jMat);
+        const flap = new THREE.Mesh(rbox(0.092, 0.032, 0.026), jMat);
         flap.position.set(side * 0.112, 1.262, 0.149);
         flap.rotation.y = side * 0.24;
         garmentGroup.add(flap);
@@ -381,7 +432,7 @@ function buildGarmentLayers(
         garmentGroup.add(pocketBtn);
 
         // Spread shirt collar
-        const collar = new THREE.Mesh(new THREE.BoxGeometry(0.085, 0.056, 0.022), jMat);
+        const collar = new THREE.Mesh(rbox(0.085, 0.056, 0.022), jMat);
         collar.position.set(side * 0.072, 1.456, 0.072);
         collar.rotation.y = side * -0.42;
         collar.rotation.z = side * -0.28;
@@ -409,7 +460,7 @@ function buildGarmentLayers(
         new THREE.Vector2(0.158, 1.45),
         new THREE.Vector2(0.095, 1.49),
       ];
-      const shellGeo = new THREE.LatheGeometry(shellProfile, 30);
+      const shellGeo = new THREE.LatheGeometry(smooth(shellProfile), 64);
       shellGeo.scale(1.15, 1, 0.78);
       const shellMesh = new THREE.Mesh(shellGeo, jMat);
       shellMesh.castShadow = true;
@@ -418,7 +469,7 @@ function buildGarmentLayers(
 
       // High storm / stand collar
       const stormCollar = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.096, 0.102, 0.085, 24, 1, true),
+        new THREE.CylinderGeometry(0.096, 0.102, 0.085, 64, 1, true),
         jMat
       );
       stormCollar.position.set(0, 1.49, 0.008);
@@ -430,13 +481,13 @@ function buildGarmentLayers(
         roughness: jacket.fabric === 'knit' ? 0.25 : 0.4,
         metalness: jacket.fabric === 'knit' ? 0.85 : 0.3,
       });
-      const centerZip = new THREE.Mesh(new THREE.BoxGeometry(0.016, 0.62, 0.02), zipMat);
+      const centerZip = new THREE.Mesh(rbox(0.016, 0.62, 0.02), zipMat);
       centerZip.position.set(0, 1.2, 0.151);
       garmentGroup.add(centerZip);
 
       if (jacket.fabric === 'ripstop') {
         [-1, 1].forEach((side) => {
-          const chestZip = new THREE.Mesh(new THREE.BoxGeometry(0.012, 0.16, 0.015), zipMat);
+          const chestZip = new THREE.Mesh(rbox(0.012, 0.16, 0.015), zipMat);
           chestZip.position.set(side * 0.115, 1.23, 0.145);
           chestZip.rotation.z = side * 0.16;
           garmentGroup.add(chestZip);
@@ -451,10 +502,10 @@ function buildGarmentLayers(
       sleevePivot.rotation.z = side * 0.13;
       sleevePivot.rotation.x = 0.05;
 
-      const shoulderCap = new THREE.Mesh(new THREE.SphereGeometry(0.072, 18, 16), jMat);
+      const shoulderCap = new THREE.Mesh(new THREE.SphereGeometry(0.072, 40, 28), jMat);
       sleevePivot.add(shoulderCap);
 
-      const upperSleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.072, 0.062, 0.28, 20), jMat);
+      const upperSleeve = new THREE.Mesh(limb(0.072, 0.062, 0.28), jMat);
       upperSleeve.position.set(0, -0.14, 0);
       upperSleeve.castShadow = true;
       sleevePivot.add(upperSleeve);
@@ -464,12 +515,12 @@ function buildGarmentLayers(
       lowerPivot.rotation.x = -0.14;
       lowerPivot.rotation.z = -side * 0.04;
 
-      const lowerSleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.061, 0.05, 0.22, 20), jMat);
+      const lowerSleeve = new THREE.Mesh(limb(0.061, 0.05, 0.22), jMat);
       lowerSleeve.position.set(0, -0.11, 0);
       lowerSleeve.castShadow = true;
       lowerPivot.add(lowerSleeve);
 
-      const cuff = new THREE.Mesh(new THREE.CylinderGeometry(0.052, 0.048, 0.045, 20), jMat);
+      const cuff = new THREE.Mesh(limb(0.052, 0.048, 0.045), jMat);
       cuff.position.set(0, -0.225, 0);
       lowerPivot.add(cuff);
 
@@ -480,14 +531,10 @@ function buildGarmentLayers(
 
   // 3. BOTTOMS / TROUSERS LAYER
   const bTex = getFabricTexture(bottom.fabric, bottom.colorHex, maxAnisotropy);
-  const bMat = new THREE.MeshStandardMaterial({
-    map: bTex,
-    roughness: 0.86,
-    metalness: 0.03,
-  });
+  const bMat = fabricMaterial(bTex, 0.86, 0.03, 0.5);
 
   // Waistband + Pelvis drape
-  const waistGeo = new THREE.CylinderGeometry(0.158, 0.166, 0.14, 28);
+  const waistGeo = new THREE.CylinderGeometry(0.158, 0.166, 0.14, 64);
   waistGeo.scale(1.13, 1, 0.76);
   const waist = new THREE.Mesh(waistGeo, bMat);
   waist.position.set(0, 0.85, 0);
@@ -496,7 +543,7 @@ function buildGarmentLayers(
 
   // Belt / dark buckle
   const beltMat = new THREE.MeshStandardMaterial({ color: 0x16171a, roughness: 0.45, metalness: 0.2 });
-  const belt = new THREE.Mesh(new THREE.CylinderGeometry(0.162, 0.162, 0.034, 28), beltMat);
+  const belt = new THREE.Mesh(new THREE.CylinderGeometry(0.162, 0.162, 0.034, 64), beltMat);
   belt.scale.set(1.13, 1, 0.76);
   belt.position.set(0, 0.895, 0);
   garmentGroup.add(belt);
@@ -507,32 +554,32 @@ function buildGarmentLayers(
     pantLegGroup.position.set(side * 0.095, 0.82, 0);
     pantLegGroup.rotation.z = side * 0.018;
 
-    const upperLeg = new THREE.Mesh(new THREE.CylinderGeometry(0.098, 0.088, 0.38, 22), bMat);
+    const upperLeg = new THREE.Mesh(limb(0.098, 0.088, 0.38), bMat);
     upperLeg.position.set(0, -0.19, 0);
     upperLeg.castShadow = true;
     upperLeg.receiveShadow = true;
     pantLegGroup.add(upperLeg);
 
-    const lowerLeg = new THREE.Mesh(new THREE.CylinderGeometry(0.087, 0.078, 0.36, 22), bMat);
+    const lowerLeg = new THREE.Mesh(limb(0.087, 0.078, 0.36), bMat);
     lowerLeg.position.set(0, -0.54, 0);
     lowerLeg.castShadow = true;
     lowerLeg.receiveShadow = true;
     pantLegGroup.add(lowerLeg);
 
     // Subtle hem cuff
-    const hemCuff = new THREE.Mesh(new THREE.TorusGeometry(0.079, 0.01, 10, 22), bMat);
+    const hemCuff = new THREE.Mesh(new THREE.TorusGeometry(0.079, 0.01, 16, 48), bMat);
     hemCuff.rotation.x = Math.PI / 2;
     hemCuff.position.set(0, -0.715, 0);
     pantLegGroup.add(hemCuff);
 
     // Utilitarian 3D cargo pockets if cargo pants
     if (bottom.fabric === 'cargo') {
-      const cargoPocket = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.16, 0.115), bMat);
+      const cargoPocket = new THREE.Mesh(rbox(0.045, 0.16, 0.115), bMat);
       cargoPocket.position.set(side * 0.088, -0.26, 0.01);
       cargoPocket.castShadow = true;
       pantLegGroup.add(cargoPocket);
 
-      const cargoFlap = new THREE.Mesh(new THREE.BoxGeometry(0.048, 0.036, 0.12), bMat);
+      const cargoFlap = new THREE.Mesh(rbox(0.048, 0.036, 0.12), bMat);
       cargoFlap.position.set(side * 0.09, -0.175, 0.01);
       pantLegGroup.add(cargoFlap);
     }
@@ -544,10 +591,15 @@ function buildGarmentLayers(
   const sTex = getFabricTexture('leather', shoes.colorHex, maxAnisotropy);
   const isBoot = shoes.id === 'chelsea-boots';
 
-  const upperShoeMat = new THREE.MeshStandardMaterial({
+  // Leather: light clearcoat for a polished sheen
+  const upperShoeMat = new THREE.MeshPhysicalMaterial({
     map: sTex,
-    roughness: isBoot ? 0.38 : 0.44,
-    metalness: 0.06,
+    bumpMap: sTex,
+    bumpScale: 0.6,
+    roughness: isBoot ? 0.4 : 0.48,
+    metalness: 0.04,
+    clearcoat: isBoot ? 0.6 : 0.3,
+    clearcoatRoughness: 0.35,
   });
 
   const soleMat = new THREE.MeshStandardMaterial({
@@ -568,7 +620,7 @@ function buildGarmentLayers(
 
     // Vulcanized or lugged sole grounded at y = 0..0.036
     const soleHeight = isBoot ? 0.042 : 0.034;
-    const sole = new THREE.Mesh(new THREE.BoxGeometry(0.094, soleHeight, 0.245), soleMat);
+    const sole = new THREE.Mesh(rbox(0.094, soleHeight, 0.245, 0.012), soleMat);
     sole.position.set(0, soleHeight / 2, 0.01);
     sole.castShadow = true;
     sole.receiveShadow = true;
@@ -576,7 +628,7 @@ function buildGarmentLayers(
 
     // Toe cap rounded front
     const toeSole = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.047, 0.047, soleHeight, 16),
+      new THREE.CylinderGeometry(0.047, 0.047, soleHeight, 48),
       soleMat
     );
     toeSole.position.set(0, soleHeight / 2, 0.125);
@@ -584,13 +636,13 @@ function buildGarmentLayers(
 
     // Main leather vamp/upper
     const upperHeight = isBoot ? 0.11 : 0.068;
-    const upper = new THREE.Mesh(new THREE.BoxGeometry(0.088, upperHeight, 0.22), upperShoeMat);
+    const upper = new THREE.Mesh(rbox(0.088, upperHeight, 0.22, 0.022), upperShoeMat);
     upper.position.set(0, soleHeight + upperHeight / 2 - 0.004, 0.002);
     upper.castShadow = true;
     shoeGroup.add(upper);
 
     const toeUpper = new THREE.Mesh(
-      new THREE.SphereGeometry(0.045, 16, 12),
+      new THREE.SphereGeometry(0.045, 40, 28),
       upperShoeMat
     );
     toeUpper.scale.set(0.98, 0.65, 1.15);
@@ -600,18 +652,18 @@ function buildGarmentLayers(
 
     if (isBoot) {
       // Chelsea boot ankle shaft + elastic gore
-      const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.056, 0.052, 0.13, 18), upperShoeMat);
+      const shaft = new THREE.Mesh(limb(0.056, 0.052, 0.13), upperShoeMat);
       shaft.position.set(0, soleHeight + 0.13, -0.045);
       shaft.castShadow = true;
       shoeGroup.add(shaft);
 
-      const gore = new THREE.Mesh(new THREE.BoxGeometry(0.095, 0.085, 0.055), laceMat);
+      const gore = new THREE.Mesh(rbox(0.095, 0.085, 0.055), laceMat);
       gore.position.set(0, soleHeight + 0.125, -0.042);
       shoeGroup.add(gore);
     } else {
       // Retro Court laces & tongue
       for (let i = 0; i < 3; i++) {
-        const lace = new THREE.Mesh(new THREE.BoxGeometry(0.056, 0.008, 0.012), laceMat);
+        const lace = new THREE.Mesh(rbox(0.056, 0.008, 0.012), laceMat);
         lace.position.set(0, soleHeight + 0.062 + i * 0.005, 0.055 - i * 0.024);
         shoeGroup.add(lace);
       }
@@ -744,7 +796,7 @@ export const MannequinViewport3D: React.FC<MannequinViewport3DProps> = ({
     const keyLight = new THREE.DirectionalLight(0xfff4e0, 2.15);
     keyLight.position.set(2.4, 3.8, 2.8);
     keyLight.castShadow = !isSoftwareGl;
-    keyLight.shadow.mapSize.set(1024, 1024);
+    keyLight.shadow.mapSize.set(isSoftwareGl ? 1024 : 2048, isSoftwareGl ? 1024 : 2048);
     keyLight.shadow.camera.near = 0.5;
     keyLight.shadow.camera.far = 12;
     keyLight.shadow.camera.left = -1.6;
@@ -824,7 +876,7 @@ export const MannequinViewport3D: React.FC<MannequinViewport3DProps> = ({
       const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.022, 2.5, 10), standMat);
       pole.position.y = 1.25;
       stand.add(pole);
-      const softbox = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.65, 0.14), standMat);
+      const softbox = new THREE.Mesh(rbox(0.45, 0.65, 0.14), standMat);
       softbox.position.set(0, 2.15, 0.05);
       softbox.rotation.x = 0.18;
       stand.add(softbox);
