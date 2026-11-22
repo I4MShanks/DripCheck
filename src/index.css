@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #121316;
+  --color-surface-dim: #121316;
+  --color-surface-bright: #38393c;
+  --color-surface-container-lowest: #0d0e11;
+  --color-surface-container-low: #1b1b1f;
+  --color-surface-container: #1f1f23;
+  --color-surface-container-high: #292a2d;
+  --color-surface-container-highest: #343538;
+  --color-on-surface: #e3e2e6;
+  --color-on-surface-variant: #c5c9ac;
+  --color-inverse-surface: #e3e2e6;
+  --color-inverse-on-surface: #303034;
+  --color-outline: #8f9378;
+  --color-outline-variant: #444932;
+  --color-primary-fixed: #caf300;
+  --color-primary-fixed-dim: #b0d500;
+  --color-primary-container: #caf300;
+  --color-on-primary-container: #596c00;
+  --color-on-primary-fixed: #171e00;
+  --color-secondary: #c9c6c0;
+  --color-secondary-container: #474742;
+  --color-on-secondary-container: #b7b5af;
+  --color-tertiary-fixed: #d3e4fe;
+  --color-tertiary-fixed-dim: #b7c8e1;
+
+  --font-display: "Outfit", system-ui, sans-serif;
+  --font-body: "Hanken Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  html,
+  body {
+    background-color: #121316;
+    color: #e3e2e6;
+    font-family: "Hanken Grotesk", system-ui, sans-serif;
+    overscroll-behavior-y: none;
+  }
+}
+
+.font-display {
+  font-family: "Outfit", system-ui, sans-serif;
+}
+
+.font-body {
+  font-family: "Hanken Grotesk", system-ui, sans-serif;
+}
+
+.font-mono-tech {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+@keyframes scanBeam {
+  0% {
+    top: 6%;
+    opacity: 0.25;
+  }
+  50% {
+    top: 90%;
+    opacity: 0.95;
+  }
+  100% {
+    top: 6%;
+    opacity: 0.25;
+  }
+}
+
+.animate-scan-beam {
+  animation: scanBeam 2.8s ease-in-out infinite;
+}

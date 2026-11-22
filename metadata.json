@@ -1,0 +1,6 @@
+{
+  "name": "Drip Check Studio",
+  "description": "Editorial 3D streetwear wardrobe studio with a 360-degree interactive mannequin, digital closet, garment scanner, and curated lookbook.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

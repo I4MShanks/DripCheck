@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Outfit:wght@500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "inverse-surface": "#e3e2e6", "on-primary": "#2a3400", "on-tertiary-fixed-variant": "#38485d", "primary-fixed": "#caf300", "secondary-container": "#474742", "on-secondary-container": "#b7b5af", "on-tertiary": "#213145", "on-tertiary-fixed": "#0b1c30", "on-secondary-fixed-variant": "#474742", "on-surface": "#e3e2e6", "tertiary-fixed-dim": "#b7c8e1", "background": "#121316", "tertiary-container": "#d3e4fe", "error": "#ffb4ab", "on-error": "#690005", "surface-variant": "#343538", "surface": "#121316", "secondary-fixed-dim": "#c9c6c0", "on-background": "#e3e2e6", "on-secondary": "#31312c", "on-surface-variant": "#c5c9ac", "on-primary-fixed-variant": "#3e4c00", "outline": "#8f9378", "surface-tint": "#b0d500", "secondary": "#c9c6c0", "primary-container": "#caf300", "surface-container-lowest": "#0d0e11", "surface-container-highest": "#343538", "on-error-container": "#ffdad6", "tertiary": "#ffffff", "surface-container-low": "#1b1b1f", "on-tertiary-container": "#56657c", "on-secondary-fixed": "#1c1c18", "secondary-fixed": "#e5e2db", "tertiary-fixed": "#d3e4fe", "surface-container": "#1f1f23", "surface-dim": "#121316", "on-primary-fixed": "#171e00", "primary": "#ffffff", "inverse-primary": "#536600", "outline-variant": "#444932", "primary-fixed-dim": "#b0d500", "on-primary-container": "#596c00", "inverse-on-surface": "#303034", "surface-container-high": "#292a2d", "surface-bright": "#38393c", "error-container": "#93000a" }, "borderRadius": { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" }, "spacing": { "margin-sm": "1rem", "space-md": "1rem", "space-lg": "1.5rem", "space-xl": "2rem", "gutter-sm": "0.75rem", "space-xs": "0.25rem", "gutter": "1rem", "space-sm": "0.5rem", "margin": "1.25rem" }, "fontFamily": { "headline-sm": ["Outfit"], "body-lg": ["Hanken Grotesk"], "label-sm": ["JetBrains Mono"], "display-lg": ["Outfit"], "headline-lg": ["Outfit"], "body-sm": ["Hanken Grotesk"], "label-md": ["JetBrains Mono"], "label-lg": ["JetBrains Mono"], "body-md": ["Hanken Grotesk"], "headline-md": ["Outfit"], "display-lg-mobile": ["Outfit"] }, "fontSize": { "headline-sm": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "500" }], "body-lg": ["16px", { "lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400" }], "label-sm": ["9px", { "lineHeight": "12px", "letterSpacing": "0.06em", "fontWeight": "600" }], "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.03em", "fontWeight": "600" }], "headline-lg": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "400" }], "label-md": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500" }], "label-lg": ["13px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }], "body-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.005em", "fontWeight": "400" }], "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "500" }], "display-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.03em", "fontWeight": "600" }] } } } };</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_12px_rgba(0,0,0,0.4)]"><div class="h-16 px-margin flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="Drip Check App Icon" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrCkQtK7GPw-gsBLaFuDffzYRmL4ChHM0j2JTAZZBg3DlWYRNZIaGlSJ9B8whGcs3ULc9-rjOf4laqro2IlvOUL8TlIsenYPbDxAWUXfjkQ5LQ2pRV8hsa8D-t1nRI3clbXMVhCN_URyrgJCcMlF6L7GT0q1EjqhJhVazq3CKToFMdUkLz5zoKROBmo1EBYx6OU6QUYD017c8jkY8A584-xvEV0GSQ7L1gZ8BMHJk0MN5w"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm font-semibold tracking-tight text-on-surface uppercase">Drip Check</span><span class="font-label-sm text-label-sm text-primary-fixed tracking-wider uppercase">Studio</span></div></div><div class="flex items-center gap-space-sm"><a class="w-11 h-11 flex items-center justify-center rounded-full bg-surface-container-high/60 text-secondary hover:text-on-surface transition-colors" data-path="notifications" href="#"><span class="material-symbols-outlined text-[20px]">notifications</span></a><a class="w-11 h-11 flex items-center justify-center rounded-full ring-1 ring-outline/20 overflow-hidden" data-path="profile-settings" href="#"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6TMQXIEmjHRzMxXXrBP3ErzZX4ZuJpRDdenuggz8r9JnLRcSta59-m0JqgiqGKnaoTQ3uEmvZRrYlcS9qUM2oh4jo1PsEEaruErPUbjogN45UOmhHFOqLJWAvJBdtV83pOdr2JiCjop6jg84Oadc3s8QBJEqYhkFEdjHzvSG5HQ4MtK1L6QuAkjQVDq2R0zynUljr-b5ya7DSuj3GVGw62BndF5vjxa6lc6JJuafe"/></a></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-28 bg-surface"><div class="flex flex-col w-full">
+<!-- Top Editorial Header & Weather Context -->
+<div class="px-margin pt-space-xs pb-space-sm flex items-center justify-between">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs text-secondary mb-0.5">
+<span class="material-symbols-outlined text-[16px] text-primary-fixed">wb_twilight</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary">Aomori Fall 14°C • Overcast</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface font-semibold tracking-tight">Autumn Stroll</h2>
+</div>
+<!-- Match Capsule Pill with AI Glow Aura -->
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-container text-on-primary-container shadow-[0_0_20px_rgba(202,243,0,0.25)] transition-transform active:scale-95" id="scoreBtn">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-label-md text-label-md font-semibold tracking-tight">96% MATCH</span>
+</button>
+</div>
+<!-- Mannequin Studio Canvas -->
+<div class="px-margin relative">
+<div class="relative w-full aspect-[4/5] rounded-lg bg-surface-container-low overflow-hidden flex items-center justify-center shadow-2xl">
+<!-- Ambient Studio Lighting & Grid Pattern -->
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(202,243,0,0.06),transparent_65%)] pointer-events-none"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-transparent opacity-90 pointer-events-none"></div>
+<!-- Studio Spec Metadata Corner Stamp -->
+<div class="absolute top-space-md left-space-md flex flex-col gap-0.5 pointer-events-none z-10">
+<span class="font-label-sm text-label-sm text-outline tracking-widest uppercase">CANVAS ID // 084-ATMN</span>
+<span class="font-label-sm text-label-sm text-secondary tracking-tight">SILHOUETTE: RELAXED UTILITY</span>
+</div>
+<!-- Quick Canvas Actions (Top Right) -->
+<div class="absolute top-space-md right-space-md flex flex-col gap-space-xs z-10">
+<button class="w-10 h-10 rounded-full bg-surface-container-highest/70 backdrop-blur-md text-on-surface flex items-center justify-center transition-transform active:rotate-45" id="rotateMannequinBtn" title="Rotate Silhouette">
+<span class="material-symbols-outlined text-[18px]">360</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container-highest/70 backdrop-blur-md text-on-surface flex items-center justify-center active:scale-90" id="expandStudioBtn" title="Inspect Silhouette Fullscreen">
+<span class="material-symbols-outlined text-[18px]">view_in_ar</span>
+</button>
+</div>
+<!-- Realistic 3D Mannequin Visual with Styled Garments -->
+<div class="relative w-full h-full flex items-center justify-center p-4">
+<img class="w-full h-full object-contain filter drop-shadow-[0_16px_32px_rgba(0,0,0,0.8)] pointer-events-none transition-all duration-500" data-alt="Editorial Tokyo streetwear aesthetic visual of a minimalist matte charcoal architectural 3D mannequin figure in a studio spotlight. The mannequin is dressed in a textured mustard yellow corduroy overshirt over a slate blue raw cotton t-shirt, relaxed washed charcoal denim trousers, and clean off-white retro court sneakers. Moody dark studio backdrop, soft rim lighting, premium high-fashion techwear vibe." id="mannequinFigure" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAED6wYG1-FfVywhcf0gsMJSckK_Tu3-91Hk62D8FWWbIFX8f1AzsnRIMkulbncHywvvIf0sKA5uhRpic2chx31SgTkYITXO9aDgRKuc_XZe4ydtZl8hBm69ot-eUnD2x8m14HosiiRengtq9QGXytlu8Y7qDev_UE4aNX7XFJj31t1PUV5UcWx7mqYj6bWzs8ZlJP8aEAmNVTLrusSGydPtqdyLsTC1meLTUEnDl2t"/>
+<!-- Dynamic Apparel Touch Target 1: Mustard Corduroy Jacket -->
+<div class="absolute top-[26%] left-[22%] z-20 group">
+<div class="relative flex items-center">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-fixed opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary-fixed"></span>
+</span>
+<div class="ml-2 px-2.5 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md shadow-lg flex items-center gap-1.5 transition-all transform hover:scale-105 active:scale-95 cursor-pointer">
+<span class="font-label-sm text-label-sm font-semibold text-primary-fixed">JACKET</span>
+<span class="font-label-sm text-label-sm text-on-surface">Corduroy Shirt • $120</span>
+</div>
+</div>
+</div>
+<!-- Dynamic Apparel Touch Target 2: Slate Blue Minimal Tee -->
+<div class="absolute top-[39%] right-[18%] z-20 group">
+<div class="relative flex items-center flex-row-reverse">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-60"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-secondary"></span>
+</span>
+<div class="mr-2 px-2.5 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md shadow-lg flex items-center gap-1.5 transition-all transform hover:scale-105 active:scale-95 cursor-pointer">
+<span class="font-label-sm text-label-sm font-semibold text-tertiary-fixed-dim">BASE</span>
+<span class="font-label-sm text-label-sm text-on-surface">Slate Heavy Tee • $45</span>
+</div>
+</div>
+</div>
+<!-- Dynamic Apparel Touch Target 3: Charcoal Washed Loose Denim -->
+<div class="absolute top-[58%] left-[24%] z-20 group">
+<div class="relative flex items-center">
+<span class="relative flex h-3 w-3">
+<span class="relative inline-flex rounded-full h-3 w-3 bg-on-surface-variant"></span>
+</span>
+<div class="ml-2 px-2.5 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md shadow-lg flex items-center gap-1.5 transition-all transform hover:scale-105 active:scale-95 cursor-pointer">
+<span class="font-label-sm text-label-sm font-semibold text-on-surface-variant">BOTTOM</span>
+<span class="font-label-sm text-label-sm text-on-surface">Washed Charcoal Denim • $95</span>
+</div>
+</div>
+</div>
+<!-- Dynamic Apparel Touch Target 4: Retro Court Sneakers -->
+<div class="absolute bottom-[13%] right-[24%] z-20 group">
+<div class="relative flex items-center flex-row-reverse">
+<span class="relative flex h-3 w-3">
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary-fixed"></span>
+</span>
+<div class="mr-2 px-2.5 py-1 rounded-full bg-surface-container-lowest/90 backdrop-blur-md shadow-lg flex items-center gap-1.5 transition-all transform hover:scale-105 active:scale-95 cursor-pointer">
+<span class="font-label-sm text-label-sm font-semibold text-primary-fixed">KICKS</span>
+<span class="font-label-sm text-label-sm text-on-surface">Off-White Retro Court • $140</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Silhouette Alignment Gauge (Bottom-Left) -->
+<div class="absolute bottom-space-md left-space-md flex items-center gap-space-xs px-2.5 py-1 rounded-full bg-surface-container-highest/60 backdrop-blur-sm pointer-events-none">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-fixed animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">FIT BALANCE 9.8</span>
+</div>
+</div>
+</div>
+<!-- AI Color Harmony & Palette Breakdown Strip -->
+<div class="px-margin mt-space-sm">
+<div class="p-space-sm rounded-lg bg-surface-container flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="flex -space-x-1.5 items-center">
+<div class="w-5 h-5 rounded-full bg-[#D4A017] shadow-sm" title="Mustard Yellow"></div>
+<div class="w-5 h-5 rounded-full bg-[#5D7A94] shadow-sm" title="Slate Blue"></div>
+<div class="w-5 h-5 rounded-full bg-[#2E3138] shadow-sm" title="Charcoal Denim"></div>
+<div class="w-5 h-5 rounded-full bg-[#EAE6DF] shadow-sm" title="Off-White Sneaker"></div>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-on-surface uppercase font-semibold truncate">Complementary Ochre-Slate Contrast</span>
+<span class="font-body-sm text-body-sm text-secondary truncate">Warm ochre balanced by mineral blues and desaturated slate.</span>
+</div>
+</div>
+<button class="shrink-0 pl-2 text-primary-fixed hover:text-on-surface transition-colors flex items-center" id="harmonyDetailsBtn">
+<span class="material-symbols-outlined text-[20px]">insights</span>
+</button>
+</div>
+</div>
+<!-- Garment Rack Selector Section -->
+<div class="mt-space-md flex flex-col">
+<!-- Category Tabs Filter -->
+<div class="px-margin flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar py-0.5">
+<button class="rack-tab px-3.5 py-1.5 rounded-full bg-on-surface text-surface-container-lowest font-label-md text-label-md font-semibold transition-all active:scale-95" data-category="all">
+          ALL
+        </button>
+<button class="rack-tab px-3.5 py-1.5 rounded-full bg-surface-container-high text-secondary hover:text-on-surface font-label-md text-label-md transition-all active:scale-95" data-category="jackets">
+          JACKETS
+        </button>
+<button class="rack-tab px-3.5 py-1.5 rounded-full bg-surface-container-high text-secondary hover:text-on-surface font-label-md text-label-md transition-all active:scale-95" data-category="tops">
+          TOPS
+        </button>
+<button class="rack-tab px-3.5 py-1.5 rounded-full bg-surface-container-high text-secondary hover:text-on-surface font-label-md text-label-md transition-all active:scale-95" data-category="pants">
+          PANTS
+        </button>
+<button class="rack-tab px-3.5 py-1.5 rounded-full bg-surface-container-high text-secondary hover:text-on-surface font-label-md text-label-md transition-all active:scale-95" data-category="shoes">
+          SHOES
+        </button>
+</div>
+<button class="shrink-0 w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface transition-colors ml-2" title="Filter Wardrobe Closet">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+</button>
+</div>
+<!-- Swappable Horizontal Apparel Strip Carousel -->
+<div class="flex gap-space-sm overflow-x-auto no-scrollbar px-margin pt-space-xs pb-space-sm" id="garmentRackTrack">
+<!-- Card 1: Currently Selected Mustard Corduroy -->
+<div class="garment-card shrink-0 w-32 rounded-lg bg-surface-container-high p-space-xs flex flex-col relative transition-all shadow-md active:scale-95 cursor-pointer" data-piece="mustard-jacket">
+<!-- Selected Neon Pin Indicator -->
+<div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary-fixed shadow-[0_0_8px_#caf300]"></div>
+<div class="w-full aspect-[4/5] rounded-DEFAULT bg-surface-container-lowest overflow-hidden flex items-center justify-center p-1 relative">
+<img class="w-full h-full object-contain" data-alt="Editorial product shot of an oversized mustard yellow corduroy utility overshirt jacket with matte horn buttons, laid flat on dark slate textured surface with luxury techwear branding hangtag." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJRoxmNxvOBtZGiEc97FlqxzVtOOqAZOmjye8xUPxnd98KPp_KqzEA7K040vH7qxPYSwwCZ480dUIU2mURks0bJ4Q_qFVb8jNMNXXEj1h92Tun2iOLMeGZpeyiUiUo0t1o5uRsOKh56mal7gf5LbmACjql8SKLQxes-6xpILYBWSdlhIZP38ZXWubMcGB-YUclUaaJDYs-2AAT0csCwctalSz8xxQxXFV_wQOm3AWM"/>
+<span class="absolute bottom-1 left-1.5 font-label-sm text-label-sm text-primary-fixed bg-surface-container-lowest/80 px-1 rounded">ON BODY</span>
+</div>
+<div class="flex flex-col mt-2 px-1 pb-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-medium truncate text-xs">Yellow Cord Jacket</span>
+<div class="flex items-center justify-between mt-0.5">
+<span class="font-label-sm text-label-sm text-secondary">A.P.C.</span>
+<span class="font-label-sm text-label-sm text-primary-fixed font-semibold">$120</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Alternate Olive Field Parka -->
+<div class="garment-card shrink-0 w-32 rounded-lg bg-surface-container p-space-xs flex flex-col relative transition-all shadow-sm hover:bg-surface-container-high active:scale-95 cursor-pointer" data-piece="olive-parka">
+<div class="w-full aspect-[4/5] rounded-DEFAULT bg-surface-container-lowest overflow-hidden flex items-center justify-center p-1 relative">
+<img class="w-full h-full object-contain" data-alt="Minimalist product photo of an olive green technical cropped shell jacket with storm collar and water-resistant matte zippers on dark studio backdrop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg582BHECpEgsoYf7Ji8rzMPN9T1VzmIDPvD1AS2Ql-W4ik_Rbp29ZNYp6foaPDZg-MHTaSdVMGdnFRE_XGO1jikApSKjxfwo2LCZ8lCZmcH7Tl02OwRHthdxXzgSmX8upLlf97Ai9u9gN9Cex68AjCCzcPsqH_MTyaAP4DpKPg2s0LvG8kShTSNV9RmjAN6dA9PePkQniu2Y5gUkyyBkLDC3NhuWkiPgiLAVTLJJ9"/>
+<span class="absolute bottom-1 left-1.5 font-label-sm text-label-sm text-secondary bg-surface-container-lowest/80 px-1 rounded">+94%</span>
+</div>
+<div class="flex flex-col mt-2 px-1 pb-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-medium truncate text-xs">Technical Shell</span>
+<div class="flex items-center justify-between mt-0.5">
+<span class="font-label-sm text-label-sm text-secondary">Nanamica</span>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">$210</span>
+</div>
+</div>
+</div>
+<!-- Card 3: Alternate Ecru Wool Cardigan -->
+<div class="garment-card shrink-0 w-32 rounded-lg bg-surface-container p-space-xs flex flex-col relative transition-all shadow-sm hover:bg-surface-container-high active:scale-95 cursor-pointer" data-piece="ecru-knit">
+<div class="w-full aspect-[4/5] rounded-DEFAULT bg-surface-container-lowest overflow-hidden flex items-center justify-center p-1 relative">
+<img class="w-full h-full object-contain" data-alt="Studio catalog shot of a heavy gauge ecru cream rib-knit mohair zip cardigan sweater neatly displayed on deep charcoal background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtqjMQdqwpvjVshAQ4JEGLG59EiBmihY7qqzd9AlUzB2jWhRgdcs0es4WoZIa8e8bB6WAX5cV23ZfwpX65xeSow5kCquaA618ejqev5l4V2muO6RzmrR9Yrq2IzlIq5anPXy5rEqAReo0o6VxlOCKhaPyxi_Ky60idr9P1bylOfXHQO4ZrFAzkq27JpMbIym1GdOFuEH2I3RxHd-LrEws5zVgBBvmMkAYP-tI-HYyS"/>
+<span class="absolute bottom-1 left-1.5 font-label-sm text-label-sm text-secondary bg-surface-container-lowest/80 px-1 rounded">+89%</span>
+</div>
+<div class="flex flex-col mt-2 px-1 pb-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-medium truncate text-xs">Chunky Knit Zip</span>
+<div class="flex items-center justify-between mt-0.5">
+<span class="font-label-sm text-label-sm text-secondary">Our Legacy</span>
+<span class="font-label-sm text-label-sm text-on-surface font-medium">$180</span>
+</div>
+</div>
+</div>
+<!-- Card 4: Slate Heavyweight Tee (Underlayer) -->
+<div class="garment-card shrink-0 w-32 rounded-lg bg-surface-container-high p-space-xs flex flex-col relative transition-all shadow-md active:scale-95 cursor-pointer" data-piece="slate-tee">
+<div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary-fixed shadow-[0_0_8px_#caf300]"></div>
+<div class="w-full aspect-[4/5] rounded-DEFAULT bg-surface-container-lowest overflow-hidden flex items-center justify-center p-1 relative">
+<img class="w-full h-full object-contain" data-alt="Editorial product photo of a boxy heavyweight slate blue raw cotton t-shirt with ribbed crew neck on clean minimal studio setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_3Y8ZupJ5gEOliMNhNicak481A8jVPeWceb2NTwCczw0x5pf0CN_w3IkJk20qiEpZgj-zdtP7zvw5qZORf-3hKvsc9L0tdnj7hrUwuJnY6RB-CwRtRW_lFK4s9VoD9C1mNX0T8hXAB1y5uakPudG1IDRBibuCITYsPYFKxZJEboZKqkr9S46niJgZ7-Rmgv0QcXVu8byOiW3poTQRy4sHvbMYGsYOdbwExLxgUPQO"/>
+<span class="absolute bottom-1 left-1.5 font-label-sm text-label-sm text-primary-fixed bg-surface-container-lowest/80 px-1 rounded">ON BODY</span>
+</div>
+<div class="flex flex-col mt-2 px-1 pb-1">
+<span class="font-headline-sm text-headline-sm text-on-surface font-medium truncate text-xs">Heavy Cotton Tee</span>
+<div class="flex items-center justify-between mt-0.5">
+<span class="font-label-sm text-label-sm text-secondary">Uniqlo U</span>
+<span class="font-label-sm text-label-sm text-primary-fixed font-semibold">$45</span>
+</div>
+</div>
+</div>
+<!-- Card 5: Add New Garment Slot Dropzone -->
+<div class="garment-card shrink-0 w-28 rounded-lg bg-surface-container-low p-space-xs flex flex-col items-center justify-center border border-dashed border-outline-variant/40 hover:border-primary-fixed/60 transition-all cursor-pointer group active:scale-95">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-secondary group-hover:text-primary-fixed group-hover:bg-surface-container-high transition-all mb-2">
+<span class="material-symbols-outlined text-[22px]">add</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary group-hover:text-on-surface text-center">Add Piece</span>
+</div>
+</div>
+</div>
+<!-- Interactive Studio Floating Action Controls -->
+<div class="px-margin mt-space-sm flex flex-col gap-space-xs pb-safe">
+<!-- Primary Row: Shuffle Fit & Wear Today -->
+<div class="flex items-center gap-space-sm">
+<!-- Shuffle Fit AI Action -->
+<button class="flex-1 h-13 py-3.5 px-space-md rounded-full bg-primary-container text-on-primary-container font-headline-sm text-headline-sm font-semibold flex items-center justify-center gap-space-xs shadow-[0_0_24px_-4px_rgba(202,243,0,0.35)] transition-all active:scale-95 hover:bg-primary-fixed" id="shuffleBtn">
+<span class="material-symbols-outlined text-[20px] transition-transform group-active:rotate-180">casino</span>
+<span>Shuffle Fit</span>
+</button>
+<!-- Wear Today Action -->
+<button class="flex-1 h-13 py-3.5 px-space-md rounded-full bg-surface-container-high text-on-surface font-headline-sm text-headline-sm font-semibold flex items-center justify-center gap-space-xs transition-all active:scale-95 hover:bg-surface-bright" id="wearTodayBtn">
+<span class="material-symbols-outlined text-[20px] text-primary-fixed" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Wear Today</span>
+</button>
+</div>
+<!-- Secondary Row: Micro Utilities (Save, Canvas Breakdown, Mood Tag) -->
+<div class="flex items-center justify-between pt-space-xs">
+<button class="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-surface-container text-secondary hover:text-on-surface text-xs font-label-md transition-colors active:scale-95" id="saveLookbookBtn">
+<span class="material-symbols-outlined text-[17px]">bookmark</span>
+<span>Save to Lookbook</span>
+</button>
+<div class="flex items-center gap-space-xs">
+<button class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface transition-colors active:scale-90" id="quickShareBtn">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</button>
+<button class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-secondary hover:text-on-surface transition-colors active:scale-90" id="cameraScanBtn">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Micro Toast Feedback Notification (Hidden by default) -->
+<div class="fixed top-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-0 transform -translate-y-2" id="toastNotification">
+<div class="px-4 py-2 rounded-full bg-surface-container-highest/95 backdrop-blur-xl text-on-surface shadow-2xl flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary-fixed" id="toastIcon">check</span>
+<span class="font-label-md text-label-md tracking-tight" id="toastMsg">Outfit saved to Autumn Lookbook</span>
+</div>
+</div>
+</div>
+<script>
+  (function initStudioCanvas() {
+    const shuffleBtn = document.getElementById('shuffleBtn');
+    const wearTodayBtn = document.getElementById('wearTodayBtn');
+    const saveBtn = document.getElementById('saveLookbookBtn');
+    const rotateBtn = document.getElementById('rotateMannequinBtn');
+    const scoreBtn = document.getElementById('scoreBtn');
+    const toast = document.getElementById('toastNotification');
+    const toastMsg = document.getElementById('toastMsg');
+    const toastIcon = document.getElementById('toastIcon');
+    const figure = document.getElementById('mannequinFigure');
+    const garmentCards = document.querySelectorAll('.garment-card');
+    const rackTabs = document.querySelectorAll('.rack-tab');
+
+    function showToast(msg, icon = 'check') {
+      if (!toast) return;
+      toastMsg.textContent = msg;
+      toastIcon.textContent = icon;
+      toast.classList.remove('opacity-0', '-translate-y-2');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', '-translate-y-2');
+      }, 2400);
+    }
+
+    if (shuffleBtn) {
+      shuffleBtn.addEventListener('click', () => {
+        figure.style.filter = 'blur(4px) brightness(1.2)';
+        shuffleBtn.disabled = true;
+        setTimeout(() => {
+          figure.style.filter = 'drop-shadow(0 16px 32px rgba(0,0,0,0.8))';
+          shuffleBtn.disabled = false;
+          showToast('Algorithmic Shuffle: 98% Urban Contrast', 'auto_awesome');
+        }, 380);
+      });
+    }
+
+    if (wearTodayBtn) {
+      wearTodayBtn.addEventListener('click', () => {
+        showToast('Logged to Outfit Calendar for Today!', 'verified');
+      });
+    }
+
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        showToast('Archived in "Autumn Strolls" Lookbook', 'bookmark_added');
+      });
+    }
+
+    if (rotateBtn) {
+      let angle = 0;
+      rotateBtn.addEventListener('click', () => {
+        angle += 90;
+        showToast('Canvas Perspective: ' + (angle % 360) + '° View', 'view_in_ar');
+      });
+    }
+
+    if (scoreBtn) {
+      scoreBtn.addEventListener('click', () => {
+        showToast('Color: 98% • Silhouette: 95% • Weather: 96%', 'analytics');
+      });
+    }
+
+    // Tab switching micro-interactions
+    rackTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        rackTabs.forEach(t => {
+          t.classList.remove('bg-on-surface', 'text-surface-container-lowest', 'font-semibold');
+          t.classList.add('bg-surface-container-high', 'text-secondary');
+        });
+        tab.classList.remove('bg-surface-container-high', 'text-secondary');
+        tab.classList.add('bg-on-surface', 'text-surface-container-lowest', 'font-semibold');
+      });
+    });
+
+    // Garment swapper card selection
+    garmentCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const piece = card.getAttribute('data-piece');
+        if (piece) {
+          showToast('Updated active layer on Canvas', 'checkroom');
+        }
+      });
+    });
+  })();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe pointer-events-none" data-active-classes="text-primary-fixed font-semibold [&amp;_span.material-symbols-outlined]:text-primary-fixed [&amp;_.active-indicator]:bg-primary-fixed [&amp;_.active-indicator]:w-4"><div class="px-margin pb-3 pt-2"><div class="pointer-events-auto h-16 rounded-full bg-surface-container-lowest/85 backdrop-blur-2xl px-space-sm shadow-[0_12px_32px_-4px_rgba(0,0,0,0.7)] flex items-center justify-between ring-1 ring-surface-container-highest/60"><a aria-current="page" class="group flex flex-col items-center justify-center flex-1 h-12 transition-all gap-0.5 text-primary-fixed font-semibold [&amp;_span.material-symbols-outlined]:text-primary-fixed [&amp;_.active-indicator]:bg-primary-fixed [&amp;_.active-indicator]:w-4" data-path="studio" href="#"><span class="material-symbols-outlined text-[22px]">styler</span><span class="font-label-sm text-label-sm tracking-wider uppercase">Studio</span><span class="active-indicator h-0.5 w-0 rounded-full transition-all duration-300"></span></a><a class="group flex flex-col items-center justify-center flex-1 h-12 text-secondary hover:text-on-surface transition-all gap-0.5" data-path="closet" href="#"><span class="material-symbols-outlined text-[22px]">checkroom</span><span class="font-label-sm text-label-sm tracking-wider uppercase">Closet</span><span class="active-indicator h-0.5 w-0 rounded-full transition-all duration-300"></span></a><div class="flex items-center justify-center px-space-xs"><a class="relative -top-4 w-14 h-14 rounded-full bg-primary-container text-on-primary-container shadow-[0_0_24px_-2px_rgba(202,243,0,0.45)] flex items-center justify-center transition-transform active:scale-95" data-path="scan" href="#"><span class="material-symbols-outlined text-[26px]">document_scanner</span><span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-surface-container-lowest ring-1 ring-primary-fixed"><span class="h-2 w-2 rounded-full bg-primary-fixed"></span></span></a></div><a class="group flex flex-col items-center justify-center flex-1 h-12 text-secondary hover:text-on-surface transition-all gap-0.5" data-path="lookbook" href="#"><span class="material-symbols-outlined text-[22px]">auto_awesome</span><span class="font-label-sm text-label-sm tracking-wider uppercase">Lookbook</span><span class="active-indicator h-0.5 w-0 rounded-full transition-all duration-300"></span></a><a class="group flex flex-col items-center justify-center flex-1 h-12 text-secondary hover:text-on-surface transition-all gap-0.5" data-path="analytics" href="#"><span class="material-symbols-outlined text-[22px]">insights</span><span class="font-label-sm text-label-sm tracking-wider uppercase">Metrics</span><span class="active-indicator h-0.5 w-0 rounded-full transition-all duration-300"></span></a></div></div></nav></body></html>

@@ -1,0 +1,225 @@
+---
+name: Obsidian Citron
+colors:
+  surface: '#121316'
+  surface-dim: '#121316'
+  surface-bright: '#38393c'
+  surface-container-lowest: '#0d0e11'
+  surface-container-low: '#1b1b1f'
+  surface-container: '#1f1f23'
+  surface-container-high: '#292a2d'
+  surface-container-highest: '#343538'
+  on-surface: '#e3e2e6'
+  on-surface-variant: '#c5c9ac'
+  inverse-surface: '#e3e2e6'
+  inverse-on-surface: '#303034'
+  outline: '#8f9378'
+  outline-variant: '#444932'
+  surface-tint: '#b0d500'
+  primary: '#ffffff'
+  on-primary: '#2a3400'
+  primary-container: '#caf300'
+  on-primary-container: '#596c00'
+  inverse-primary: '#536600'
+  secondary: '#c9c6c0'
+  on-secondary: '#31312c'
+  secondary-container: '#474742'
+  on-secondary-container: '#b7b5af'
+  tertiary: '#ffffff'
+  on-tertiary: '#213145'
+  tertiary-container: '#d3e4fe'
+  on-tertiary-container: '#56657c'
+  error: '#ffb4ab'
+  on-error: '#690005'
+  error-container: '#93000a'
+  on-error-container: '#ffdad6'
+  primary-fixed: '#caf300'
+  primary-fixed-dim: '#b0d500'
+  on-primary-fixed: '#171e00'
+  on-primary-fixed-variant: '#3e4c00'
+  secondary-fixed: '#e5e2db'
+  secondary-fixed-dim: '#c9c6c0'
+  on-secondary-fixed: '#1c1c18'
+  on-secondary-fixed-variant: '#474742'
+  tertiary-fixed: '#d3e4fe'
+  tertiary-fixed-dim: '#b7c8e1'
+  on-tertiary-fixed: '#0b1c30'
+  on-tertiary-fixed-variant: '#38485d'
+  background: '#121316'
+  on-background: '#e3e2e6'
+  surface-variant: '#343538'
+typography:
+  display-lg:
+    fontFamily: Outfit
+    fontSize: 40px
+    fontWeight: '600'
+    lineHeight: 48px
+    letterSpacing: -0.03em
+  display-lg-mobile:
+    fontFamily: Outfit
+    fontSize: 32px
+    fontWeight: '600'
+    lineHeight: 38px
+    letterSpacing: -0.03em
+  headline-lg:
+    fontFamily: Outfit
+    fontSize: 28px
+    fontWeight: '600'
+    lineHeight: 34px
+    letterSpacing: -0.02em
+  headline-md:
+    fontFamily: Outfit
+    fontSize: 22px
+    fontWeight: '500'
+    lineHeight: 28px
+    letterSpacing: -0.015em
+  headline-sm:
+    fontFamily: Outfit
+    fontSize: 18px
+    fontWeight: '500'
+    lineHeight: 24px
+    letterSpacing: -0.01em
+  body-lg:
+    fontFamily: Hanken Grotesk
+    fontSize: 16px
+    fontWeight: '400'
+    lineHeight: 24px
+    letterSpacing: 0em
+  body-md:
+    fontFamily: Hanken Grotesk
+    fontSize: 14px
+    fontWeight: '400'
+    lineHeight: 20px
+    letterSpacing: 0.005em
+  body-sm:
+    fontFamily: Hanken Grotesk
+    fontSize: 12px
+    fontWeight: '400'
+    lineHeight: 16px
+    letterSpacing: 0.01em
+  label-lg:
+    fontFamily: JetBrains Mono
+    fontSize: 13px
+    fontWeight: '500'
+    lineHeight: 16px
+    letterSpacing: 0.02em
+  label-md:
+    fontFamily: JetBrains Mono
+    fontSize: 11px
+    fontWeight: '500'
+    lineHeight: 14px
+    letterSpacing: 0.04em
+  label-sm:
+    fontFamily: JetBrains Mono
+    fontSize: 9px
+    fontWeight: '600'
+    lineHeight: 12px
+    letterSpacing: 0.06em
+rounded:
+  sm: 0.5rem
+  DEFAULT: 1rem
+  md: 1.5rem
+  lg: 2rem
+  xl: 3rem
+  full: 9999px
+spacing:
+  gutter: 1rem
+  gutter-sm: 0.75rem
+  margin: 1.25rem
+  margin-sm: 1rem
+  space-xs: 0.25rem
+  space-sm: 0.5rem
+  space-md: 1rem
+  space-lg: 1.5rem
+  space-xl: 2rem
+---
+
+## Brand & Style
+
+This design system channels Tokyo streetwear precision intersected with Nordic architectural minimalism. It positions wardrobe curation and algorithmic styling as an elite, editorial experience rather than a transactional utility. The interface acts as a silent gallery frame: muted, pitch-dark backdrops with warm bone accents that elevate photography, punctuated by an electric citron pulse when the AI delivers insight.
+
+### Visual Pillars
+- **Dark Editorial Canvas:** Deep obsidian voids and warm ecru typography create an immediate high-fashion editorial tension.
+- **Precision Streetwear Utility:** Technical metadata, garment specs, and match metrics mimic luxury technical garment labels and techwear hangtags.
+- **Tactile Modernist Depth:** Translucent obsidian glass overlays, diffused backdrop blurs, and soft surface gradations establish a tactile, pocket-sized studio atmosphere.
+
+## Colors
+
+The palette is anchored in an abyssal dark spectrum to maximize garment color accuracy and evoke a luxury night-mode atmosphere.
+
+- **Primary (`#D4FF00` - Electric Citron):** High-voltage kinetic accent reserved strictly for AI insights, compatibility scores, active status toggles, and primary CTAs. It must never be diluted or applied to vast background surfaces.
+- **Secondary (`#F4F1EA` - Warm Ecru):** Archival paper white used for display headlines, key values, and primary editorial typography, imparting warmth against the deep obsidian canvas.
+- **Tertiary (`#64748B` - Slate Gray):** Structural neutral for borders, dividers, secondary metadata, and inactive icons.
+- **Neutral (`#0D0E11` - Obsidian Void):** Near-black deep ground tone with subtle warmth, preventing optical glare while providing profound depth.
+
+### Functional Roles
+- **Surface Elevation 0 (Base Canvas):** `#0D0E11`
+- **Surface Elevation 1 (Card/Sheet):** `#16181D`
+- **Surface Elevation 2 (Elevated Component/Modal):** `#1F222A`
+- **Glass Overlay:** `rgba(22, 24, 29, 0.72)` with 20px blur and `1px` inner stroke of `rgba(244, 241, 234, 0.08)`.
+- **Text Primary:** `#F4F1EA`
+- **Text Secondary:** `#94A3B8`
+- **Text Accent:** `#D4FF00`
+
+## Typography
+
+The typographic hierarchy pairs the aerodynamic, modern geometry of **Outfit** for editorial titles with the crisp utilitarian neutrality of **Hanken Grotesk** for descriptions. **JetBrains Mono** introduces a high-spec technical layer inspired by architectural blueprints and designer care labels.
+
+### Rules of Engagement
+- **Headline Casing:** Mixed case with strict negative tracking for a punchy, fashion-magazine masthead presence.
+- **Technical Badges & Meta:** Always rendered in `JetBrains Mono`, all-caps, with slight letter spacing (`0.04em` to `0.06em`). Used for season tags, color codes, aspect ratios, fit percentages, and timestamps.
+- **Editorial Copy:** Set in `Hanken Grotesk` regular or medium. Maintain strict character-per-line measures (max 45 characters on mobile screens) for rapid scanability.
+
+## Layout & Spacing
+
+The architecture operates on an 8-point base grid optimized for mobile ergonomics, swipe gestures, and edge-to-edge garment visuals.
+
+### Grid & Form Factors
+- **Mobile First (Default Canvas):** 4-column fluid layout with `1.25rem` (`20px`) margins and `0.75rem` (`12px`) gutters for dense, magazine-like multi-outfit comparisons.
+- **Large Handheld / Foldable:** 6-column fluid layout, expanding margins to `1.5rem` (`24px`) and gutters to `1rem` (`16px`).
+- **Vertical Ryhthm:** Component stacks use `space-md` (`16px`) default gaps. High-tension section breaks use `space-xl` (`32px`). Safe-area bottom offsets mandate a minimum `88px` clearance to prevent conflict with the floating action bar.
+
+## Elevation & Depth
+
+Visual depth is achieved through translucent obsidian layers, luminous low-opacity outlines, and tinted electric glow rather than heavy drop shadows.
+
+### Elevation Layers
+- **Level 0 (Floor):** Plain `#0D0E11` matte canvas.
+- **Level 1 (Card & Content Container):** Solid `#16181D` surface with a `1px` continuous border in `rgba(244, 241, 234, 0.06)`.
+- **Level 2 (Active Item / Overlay Card):** Frosted glass `rgba(22, 24, 29, 0.85)` with `backdrop-filter: blur(24px)`, elevated by a soft ambient shadow: `0 12px 32px -4px rgba(0, 0, 0, 0.65)`.
+- **Level 3 (Floating HUD / Navigation Deck):** Dual-layer pill suspended above content: background `rgba(13, 14, 17, 0.8)` with `backdrop-filter: blur(28px)`, bounded by a hair-thin gradient border: `rgba(244, 241, 234, 0.15)` fading to `rgba(212, 255, 0, 0.25)`.
+- **Citron Luminescence (AI Focus):** High-performing matches or active interactive states emit an ambient aura: `0 0 24px -2px rgba(212, 255, 0, 0.18)`.
+
+## Shapes
+
+The design system enforces a sleek, organic geometry balancing brutalist grid alignments with ultra-soft, rounded corner forms. 
+
+- **Primary Interactive Elements & Action Bars:** Full pill geometry (`rounded-full` / `9999px`) provides tactile, thumb-friendly ergonomic anchors.
+- **Wardrobe & Lookbook Cards:** `rounded-3xl` (`24px`) curvature creates a smooth, pebble-like silhouette for high-resolution apparel crops.
+- **Category Chips & Technical Tags:** Smooth pill profiles (`rounded-full`) or softened rectangles (`rounded-xl` / `12px`) for nested secondary tags.
+
+## Components
+
+### Buttons
+- **Primary (Electric Citron):** Full pill (`rounded-full`), `#D4FF00` fill, solid black (`#0D0E11`) text set in `Outfit` Semibold. Press state scales smoothly to `0.97` with a brightness shift to `#E2F952`.
+- **Secondary (Ghost Glass):** Pill shape with `rgba(244, 241, 234, 0.08)` surface, `1px` border of `rgba(244, 241, 234, 0.16)`, ecru text. On press: `rgba(244, 241, 234, 0.14)`.
+- **Icon Actions:** `44x44px` circular glass nodes, housing sharp, minimal `20px` stroke icons.
+
+### Match Score & Status Badges
+- **Vibrant Match Pill:** Compact capsule (`height: 26px`, padding `0 10px`), electric citron fill with `#0D0E11` text in `JetBrains Mono` label-md (`e.g., 98% MATCH`). Subtle pulse animation on AI generation.
+- **Meta Tag / Hangtag:** Semi-transparent dark pill with `1px` subtle outline, ecru or slate text (`label-sm`), displaying brand, size, or material composition.
+
+### Chips & Wardrobe Filters
+- **Category Chips:** `height: 36px`, rounded pill silhouette.
+  - *Inactive:* Solid `#16181D` with subtle `rgba(244, 241, 234, 0.06)` outline, slate gray text.
+  - *Active:* Inverted ecru background (`#F4F1EA`) with `#0D0E11` bold text, or accented with an electric citron dot indicator.
+
+### Cards & Apparel Tiles
+- **Outfit Card (Display):** Aspect ratio `3:4` or `4:5`. `rounded-3xl` frame, `#16181D` background. Garment images sit cleanly with an inner soft vignette. Floating overlay pins the Match Score pill in the top-right corner (`space-sm` offset) and technical tags at the lower-left.
+- **Empty State / Dropzone:** Dashed `1.5px` border in `rgba(100, 116, 139, 0.35)` across an obsidian glass fill with a central minimal plus glyph.
+
+### Input Fields & Search
+- **Search & AI Prompt Bar:** `height: 52px`, pill-shaped, `#16181D` interior with `1px` slate border. Leading technical search icon, trailing citron-tinted voice/sparkle prompt button. Active focus state triggers an electric citron glow border.
+
+### Floating Action Bar (Bottom Navigation HUD)
+- **Docked Deck:** Centered floating glass pod positioned `16px` above the home indicator. Background `rgba(13, 14, 17, 0.85)` with `32px` blur and high-precision `1px` perimeter stroke. Contains icon-only navigation with the central "Drip Check / AI Camera" trigger styled as an elevated circular `#D4FF00` action node.
