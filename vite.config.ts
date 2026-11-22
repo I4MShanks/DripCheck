@@ -6,6 +6,8 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
+    // Relative base so the build works on GitHub Pages (/DripCheck/) and any other host.
+    base: './',
     plugins: [
       react(),
       tailwindcss(),

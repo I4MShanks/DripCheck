@@ -1,21 +1,21 @@
 import { CuratedLook, GarmentItem, MannequinOutfit, WornLogEntry } from '../types/wardrobe';
 
-export const BRAND_LOGO_URL = '/src/assets/images/drip_check_logo_1795343300294.jpg';
-export const USER_AVATAR_URL = '/src/assets/images/user_profile_avatar_1795343301765.jpg';
+export const BRAND_LOGO_URL = import.meta.env.BASE_URL + 'src/assets/images/drip_check_logo_1795343300294.jpg';
+export const USER_AVATAR_URL = import.meta.env.BASE_URL + 'src/assets/images/user_profile_avatar_1795343301765.jpg';
 
 export const GARMENT_IMAGES = {
-  mustardCord: '/src/assets/images/garment_mustard_cord_1795343301624.jpg',
-  oliveShell: '/src/assets/images/garment_olive_shell_1795343301840.jpg',
-  ecruKnit: '/src/assets/images/garment_ecru_knit_1795343301120.jpg',
-  slateTee: '/src/assets/images/garment_slate_tee_1795343300594.jpg',
-  skyOxford: '/src/assets/images/garment_sky_oxford_1795343301056.jpg',
-  charcoalDenim: '/src/assets/images/garment_charcoal_denim_1795343301447.jpg',
-  oliveCargo: '/src/assets/images/garment_olive_cargo_1795343301780.jpg',
-  ecruSneakers: '/src/assets/images/garment_ecru_sneakers_1795343299648.jpg',
-  blackHoodie: '/src/assets/images/garment_black_hoodie_1795343305201.jpg',
-  chelseaBoots: '/src/assets/images/garment_chelsea_boots_1795343305174.jpg',
-  forestCordScan: '/src/assets/images/scan_forest_corduroy_1795343301965.jpg',
-  coffeeFlatlay: '/src/assets/images/lookbook_coffee_flatlay_1795343301603.jpg',
+  mustardCord: import.meta.env.BASE_URL + 'src/assets/images/garment_mustard_cord_1795343301624.jpg',
+  oliveShell: import.meta.env.BASE_URL + 'src/assets/images/garment_olive_shell_1795343301840.jpg',
+  ecruKnit: import.meta.env.BASE_URL + 'src/assets/images/garment_ecru_knit_1795343301120.jpg',
+  slateTee: import.meta.env.BASE_URL + 'src/assets/images/garment_slate_tee_1795343300594.jpg',
+  skyOxford: import.meta.env.BASE_URL + 'src/assets/images/garment_sky_oxford_1795343301056.jpg',
+  charcoalDenim: import.meta.env.BASE_URL + 'src/assets/images/garment_charcoal_denim_1795343301447.jpg',
+  oliveCargo: import.meta.env.BASE_URL + 'src/assets/images/garment_olive_cargo_1795343301780.jpg',
+  ecruSneakers: import.meta.env.BASE_URL + 'src/assets/images/garment_ecru_sneakers_1795343299648.jpg',
+  blackHoodie: import.meta.env.BASE_URL + 'src/assets/images/garment_black_hoodie_1795343305201.jpg',
+  chelseaBoots: import.meta.env.BASE_URL + 'src/assets/images/garment_chelsea_boots_1795343305174.jpg',
+  forestCordScan: import.meta.env.BASE_URL + 'src/assets/images/scan_forest_corduroy_1795343301965.jpg',
+  coffeeFlatlay: import.meta.env.BASE_URL + 'src/assets/images/lookbook_coffee_flatlay_1795343301603.jpg',
 };
 
 export const INITIAL_GARMENTS: GarmentItem[] = [
