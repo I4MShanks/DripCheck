@@ -10,6 +10,7 @@ import {
   getFabricTexture,
   getTurntablePlinthTexture,
 } from '../utils/proceduralTextures';
+import { loadRealisticMannequin, RealisticMannequin } from '../three/RealisticMannequin';
 
 interface MannequinViewport3DProps {
   jacket: GarmentItem | null;
@@ -701,6 +702,7 @@ export const MannequinViewport3D: React.FC<MannequinViewport3DProps> = ({
     controls?: OrbitControls;
     garmentGroup?: THREE.Group;
     mannequinRoot?: THREE.Group;
+    realistic?: RealisticMannequin;
     anchors?: {
       jacket: THREE.Object3D;
       top: THREE.Object3D;
@@ -925,6 +927,26 @@ export const MannequinViewport3D: React.FC<MannequinViewport3DProps> = ({
     if (!isSoftwareGl) {
       renderer.compile(scene, camera);
     }
+
+    // Swap the procedural figure for the realistic mannequin once its model loads.
+    // If loading fails, the procedural figure simply stays.
+    loadRealisticMannequin()
+      .then((real) => {
+        if (disposed) {
+          real.dispose();
+          return;
+        }
+        disposeGroupContents(bodyGroup);
+        disposeGroupContents(garmentGroup);
+        mannequinRoot.add(real.root);
+        const p = latestPropsRef.current;
+        real.setOutfit({ jacket: p.jacket, top: p.top, bottom: p.bottom, shoes: p.shoes }, maxAnisotropy);
+        sceneRefs.current.realistic = real;
+        requestRender();
+      })
+      .catch((err) => {
+        console.warn('Realistic mannequin unavailable, using procedural figure', err);
+      });
 
     // Coalesced Render-on-Demand & Software-WebGL Pacer
     let frameId = 0;
@@ -1165,6 +1187,8 @@ export const MannequinViewport3D: React.FC<MannequinViewport3DProps> = ({
 
     return () => {
       disposed = true;
+      sceneRefs.current.realistic?.dispose();
+      sceneRefs.current.realistic = undefined;
       cancelAnimationFrame(frameId);
       clearTimeout(frameId);
       resizeObserver.disconnect();
@@ -1191,7 +1215,12 @@ export const MannequinViewport3D: React.FC<MannequinViewport3DProps> = ({
 
   // Update Garment 3D Meshes when outfit items change
   useEffect(() => {
-    const { garmentGroup, maxAnisotropy, requestRender } = sceneRefs.current;
+    const { garmentGroup, maxAnisotropy, requestRender, realistic } = sceneRefs.current;
+    if (realistic) {
+      realistic.setOutfit({ jacket, top, bottom, shoes }, maxAnisotropy);
+      requestRender();
+      return;
+    }
     if (!garmentGroup) return;
     buildGarmentLayers(garmentGroup, jacket, top, bottom, shoes, maxAnisotropy);
     requestRender();
