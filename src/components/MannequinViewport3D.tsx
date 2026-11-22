@@ -65,12 +65,12 @@ function rbox(w: number, h: number, d: number, r = 0.008) {
 }
 
 // Tapered capsule centred on the origin along Y (drop-in for CylinderGeometry):
-// round ends hide the joints between limb segments.
-function limb(rTop: number, rBottom: number, length: number, radial = 48) {
+// round ends hide the joints between limb segments. Garments pass a small capH
+// so sleeve and trouser openings look cut rather than domed.
+function limb(rTop: number, rBottom: number, length: number, radial = 48, capH = 0.6) {
   const pts: THREE.Vector2[] = [];
   const half = length / 2;
   const capSteps = 10;
-  const capH = 0.6;
   for (let i = 0; i <= capSteps; i++) {
     const a = -Math.PI / 2 + (i / capSteps) * (Math.PI / 2);
     pts.push(new THREE.Vector2(Math.cos(a) * rBottom + 1e-5, -half + Math.sin(a) * rBottom * capH));
@@ -330,7 +330,7 @@ function buildGarmentLayers(
       sleevePivot.rotation.x = 0.05;
 
       const upperSleeve = new THREE.Mesh(
-        limb(0.068, isLong ? 0.058 : 0.064, isLong ? 0.29 : 0.21),
+        limb(0.068, isLong ? 0.058 : 0.064, isLong ? 0.29 : 0.21, 48, 0.15),
         topMat
       );
       upperSleeve.position.set(0, isLong ? -0.14 : -0.1, 0);
@@ -342,7 +342,7 @@ function buildGarmentLayers(
         lowerPivot.position.set(0, -0.28, 0);
         lowerPivot.rotation.x = -0.14;
         lowerPivot.rotation.z = -side * 0.04;
-        const lowerSleeve = new THREE.Mesh(limb(0.056, 0.044, 0.23), topMat);
+        const lowerSleeve = new THREE.Mesh(limb(0.056, 0.044, 0.23, 48, 0.15), topMat);
         lowerSleeve.position.set(0, -0.115, 0);
         lowerSleeve.castShadow = true;
         lowerPivot.add(lowerSleeve);
@@ -505,7 +505,7 @@ function buildGarmentLayers(
       const shoulderCap = new THREE.Mesh(new THREE.SphereGeometry(0.072, 40, 28), jMat);
       sleevePivot.add(shoulderCap);
 
-      const upperSleeve = new THREE.Mesh(limb(0.072, 0.062, 0.28), jMat);
+      const upperSleeve = new THREE.Mesh(limb(0.072, 0.062, 0.28, 48, 0.15), jMat);
       upperSleeve.position.set(0, -0.14, 0);
       upperSleeve.castShadow = true;
       sleevePivot.add(upperSleeve);
@@ -515,12 +515,12 @@ function buildGarmentLayers(
       lowerPivot.rotation.x = -0.14;
       lowerPivot.rotation.z = -side * 0.04;
 
-      const lowerSleeve = new THREE.Mesh(limb(0.061, 0.05, 0.22), jMat);
+      const lowerSleeve = new THREE.Mesh(limb(0.061, 0.05, 0.22, 48, 0.15), jMat);
       lowerSleeve.position.set(0, -0.11, 0);
       lowerSleeve.castShadow = true;
       lowerPivot.add(lowerSleeve);
 
-      const cuff = new THREE.Mesh(limb(0.052, 0.048, 0.045), jMat);
+      const cuff = new THREE.Mesh(limb(0.052, 0.048, 0.045, 48, 0.15), jMat);
       cuff.position.set(0, -0.225, 0);
       lowerPivot.add(cuff);
 
@@ -554,13 +554,13 @@ function buildGarmentLayers(
     pantLegGroup.position.set(side * 0.095, 0.82, 0);
     pantLegGroup.rotation.z = side * 0.018;
 
-    const upperLeg = new THREE.Mesh(limb(0.098, 0.088, 0.38), bMat);
+    const upperLeg = new THREE.Mesh(limb(0.098, 0.088, 0.38, 48, 0.15), bMat);
     upperLeg.position.set(0, -0.19, 0);
     upperLeg.castShadow = true;
     upperLeg.receiveShadow = true;
     pantLegGroup.add(upperLeg);
 
-    const lowerLeg = new THREE.Mesh(limb(0.087, 0.078, 0.36), bMat);
+    const lowerLeg = new THREE.Mesh(limb(0.087, 0.078, 0.36, 48, 0.15), bMat);
     lowerLeg.position.set(0, -0.54, 0);
     lowerLeg.castShadow = true;
     lowerLeg.receiveShadow = true;
@@ -652,7 +652,7 @@ function buildGarmentLayers(
 
     if (isBoot) {
       // Chelsea boot ankle shaft + elastic gore
-      const shaft = new THREE.Mesh(limb(0.056, 0.052, 0.13), upperShoeMat);
+      const shaft = new THREE.Mesh(limb(0.056, 0.052, 0.13, 48, 0.15), upperShoeMat);
       shaft.position.set(0, soleHeight + 0.13, -0.045);
       shaft.castShadow = true;
       shoeGroup.add(shaft);
